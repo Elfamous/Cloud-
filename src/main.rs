@@ -1,6 +1,6 @@
 use std::io::{self, Write};
 use std::process::Command;
-fn main{
+fn main(){
     println!("Enter a command !");
     loop {
         print!("> ");
@@ -8,10 +8,11 @@ fn main{
         let mut input = String::new();
         io::stdin().read_line(&mut input).expect("Failed to read line");
         let command = input.trim();
+        Commands(command);
     }
 }
 
-fn Command(command: &str) {
+fn Commands(command: &str) {
     match command {
         "exit" => {
             println!("Exiting...");
@@ -19,6 +20,14 @@ fn Command(command: &str) {
         }
         "version" => {
             let output = Command::new("podman").arg("--version").output().expect("Failed to execute command");
+            println!("{}", String::from_utf8_lossy(&output.stdout));
+        }
+        "start" => {
+            let output = Command::new("podman").args(["start", "minecraft-test"]).output().expect("Failed to execute command");
+            println!("{}", String::from_utf8_lossy(&output.stdout));
+        }
+        "stop" => {
+            let output = Command::new("podman").args(["stop", "minecraft-test"]).output().expect("Failed to execute command");
             println!("{}", String::from_utf8_lossy(&output.stdout));
         }
         _ => {
